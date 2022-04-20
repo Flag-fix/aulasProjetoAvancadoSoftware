@@ -98,6 +98,15 @@ double recebeBonus(double salario, double bonus) {
   return salario + (0.1 * bonus);
 }
 
+double salario(int opcao, double salario, double valor) {
+  if (opcao == 1) {
+    return recebeBonificacao(salario, valor);
+  } else if (opcao == 2) {
+    return descontoSalario(salario, valor);
+  } else {
+    return recebeBonus(salario, valor);
+  }
+}
 
 /*
 Atividade I 
