@@ -1,19 +1,23 @@
-//objetivo entneder o parametro de vunção:
+//objetivo entneder o parametro de função:
+
+const aprovado = "aprovado";
+const reprovado = "reprovado";
 
 void show() {
-  verificaAprovacao(verificaMedia, 10, 5);
+  verificaAprovacao(10, 5,
+      (nota1, nota2) => (((nota1 + nota2) / 2) >= 6) ? aprovado : reprovado);
 }
 
-String verificaAprovacao(Function acao, double nota1, double nota2) {
+String verificaAprovacao(double nota1, double nota2, Function acao) {
   return acao(nota1, nota2);
 }
 
 String verificaMedia(double nota1, double nota2) {
   double media = (nota1 + nota2) / 2;
   if (media >= 6) {
-    return "Aprovado";
+    return aprovado;
   } else {
-    return "Reprovado";
+    return reprovado;
   }
 }
 
@@ -23,9 +27,9 @@ String verificaMaiorNota(double nota1, double nota2) {
     maior = nota2;
   }
   if (maior >= 6) {
-    return "Aprovado";
+    return aprovado;
   } else {
-    return "Reprovado";
+    return reprovado;
   }
 }
 
@@ -35,9 +39,9 @@ String verificaMenorNota(double nota1, double nota2) {
     menor = nota2;
   }
   if (menor >= 6) {
-    return "Aprovado";
+    return aprovado;
   } else {
-    return "Reprovado";
+    return reprovado;
   }
 }
 
