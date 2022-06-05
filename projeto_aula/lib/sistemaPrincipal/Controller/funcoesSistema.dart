@@ -44,7 +44,9 @@ decodificarPin(var pinCliente) {
     } else {
       throw Exception('Consulte o log $e');
     }
-  } catch (Exception) {}
+  } catch (e) {
+    throw Exception('Consulte o log $e');
+  }
 }
 
 Random geradorpin() {
