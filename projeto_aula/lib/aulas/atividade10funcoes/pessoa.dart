@@ -3,20 +3,14 @@ class Pessoa {
   DateTime? dtNasc;
   double? peso;
   String? sexo;
+  String? tipoSanguineo;
   double? altura;
-  double? imcMedio;
-  String? faixaEtaria;
-  double? QtdObesoH;
-  double? QtdObesoM;
 
   Pessoa(
       {this.nome,
       this.dtNasc,
-      this.faixaEtaria,
-      this.imcMedio,
       this.peso,
+      this.tipoSanguineo,
       this.sexo,
-      this.QtdObesoH,
-      this.QtdObesoM,
       this.altura});
 }

@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:js_util';
 import 'dart:math';
 
+import 'package:robo_trader/aulas/atividade10funcoes/imc.dart';
+import 'package:robo_trader/aulas/atividade10funcoes/obesidade.dart';
 import 'package:robo_trader/aulas/atividade10funcoes/pessoa.dart';
+import 'package:robo_trader/aulas/atividade10funcoes/tipoSanguineo.dart';
 
 /// As funções elaboradas deverá possuir:
 /// (i)   Anonymous function e/ou arrow function (pelo menos 2 exemplos)
@@ -75,8 +78,8 @@ double calcularImc(Pessoa pessoa){
   return pessoa.peso! / pow(pessoa.altura!, 2);
 }
 
-List<Pessoa> verificaFaixaEtariaImc(List<Pessoa> pessoas){
-  List<Pessoa> listaPessoas = [];
+List<Imc> verificaFaixaEtariaImc(List<Pessoa> pessoas){
+  List<Imc> listaImcMedio = [];
   var varAuxiliarUnidade = 1;
   var varAuxDezena = 10;
   var varAuxiliarWhile = true;
@@ -85,19 +88,19 @@ List<Pessoa> verificaFaixaEtariaImc(List<Pessoa> pessoas){
   while(varAuxiliarWhile){
     pessoas.forEach((e) {
       var idade = calcularIdade(e.dtNasc!);
-      Pessoa pessoaNova = newObject();
+      Imc? imc;
       if (idade > varAuxiliarUnidade && idade < varAuxDezena) {
         var IMC = calcularImc(e);
         imcMedio += IMC.toStringAsFixed(2);
         qtdPorFaixa += 1;
       }
       if (pessoas.indexOf(e) + 1 == pessoas.length) {
-        pessoaNova.faixaEtaria = varAuxiliarUnidade.toString() + "-" + varAuxDezena.toString();
+        imc?.faixaEtaria = varAuxiliarUnidade.toString() + "-" + varAuxDezena.toString();
         var resultado = imcMedio / qtdPorFaixa;
-        pessoaNova.imcMedio = resultado;
+        imc?.imcMedio = resultado;
         imcMedio = 0.0;
         qtdPorFaixa = 0;
-        listaPessoas.add(pessoaNova);
+        listaImcMedio.add(imc!);
         varAuxDezena += 10;
         varAuxiliarUnidade += 10;
         if (varAuxDezena == 100) {
@@ -106,7 +109,7 @@ List<Pessoa> verificaFaixaEtariaImc(List<Pessoa> pessoas){
       }
     });
   }
-  return listaPessoas;
+  return listaImcMedio;
 }
 
 /*
@@ -115,17 +118,18 @@ List<Pessoa> verificaFaixaEtariaImc(List<Pessoa> pessoas){
 * 1 - Calcula quantidade de obesos por sexo
 * */
 
-List<Pessoa> calculaQtdObesoSexo(List<Pessoa> pessoas){
-  List<Pessoa> listaPessoas = [];
+List<Obesidade> calculaQtdObesoSexo(List<Pessoa> pessoas){
+  List<Obesidade> listaObesos = [];
   var qtdObesoH = 0;
   var homem = 0;
   var mulher = 0;
   var qtdObesoM = 0;
-  Pessoa pessoa = newObject();
+  Obesidade? obesidade;
   pessoas.forEach((p) {
     var IMC = calcularImc(p);
     if (p.sexo == "MASCULINO") {
       homem += 1;
+      //Pessoa obesa com IMC acima de 30
       if (IMC > 30) {
         qtdObesoH += 1;
       }
@@ -136,9 +140,97 @@ List<Pessoa> calculaQtdObesoSexo(List<Pessoa> pessoas){
       mulher += 1;
     }
   });
-  pessoa.QtdObesoM = mulher*qtdObesoM/100;
-  pessoa.QtdObesoH = homem*qtdObesoH/100;
-  listaPessoas.add(pessoa);
-  return listaPessoas;
+  //add a % de mulheres e homens
+  obesidade?.QtdObesoM = mulher*qtdObesoM/100;
+  obesidade?.QtdObesoH = homem*qtdObesoH/100;
+  listaObesos.add(obesidade!);
+  return listaObesos;
 }
 
+
+/*
+* Função - 04
+*  Realiza calculo da média das pessoas por tipo sanguíneo
+* 1 - Calcula quantidade de pessoas por tipo sanguineo
+* */
+
+List<TipoSanguineo> calculaQtdMediaTipoSanguineo(List<Pessoa> pessoas, List<TipoSanguineo> tipoSanguineo){
+  List<TipoSanguineo> listaTipoSanguineo = [];
+  tipoSanguineo.forEach((tipo) {
+    var idade = 0;
+    var qtdPessoas = 0;
+    TipoSanguineo? tipoSanguineo;
+    pessoas.forEach((p) {
+      if (p.tipoSanguineo == tipo.tipoSangue!) {
+        idade += calcularIdade(p.dtNasc!);
+        qtdPessoas += 1;
+      }
+      if (pessoas.indexOf(p) + 1 == pessoas.length) {
+        var media= idade / qtdPessoas;
+        tipoSanguineo?.idadeMedia =media;
+        tipoSanguineo?.tipoSangue = tipo.tipoSangue!;
+        listaTipoSanguineo.add(tipoSanguineo!);
+      }
+    });
+  });
+  return listaTipoSanguineo;
+}
+
+
+/*
+* Função - 05
+*  Realiza verificação da quantidade de doadores por tipo sanquineo
+* 1 - Calcula quantidade de possiveis doadores por tipo sanguineo
+* 2 - Faz validação para cada tipo sanguineo para verificar se é compativel com sangue ou não
+* OBS: Somente pessoas com idade de 16 a 69 anos e com peso acima de 50 Kg podem doar sangue.
+* */
+
+List<TipoSanguineo> verificaQtdDoadoresPorTipoSanguineo(List<Pessoa> pessoas, List<TipoSanguineo> tiposSanguineo){
+  List<TipoSanguineo> listaDoadores = [];
+  tiposSanguineo.forEach((tip) {
+    var idade = 0;
+    var qtdPessoas = 0;
+    TipoSanguineo? tipoSanguineo;
+    pessoas.forEach((p) {
+      idade = calcularIdade(p.dtNasc!);
+      if (idade >= 16 && idade <= 69 && p.peso! > 50) {
+        var sanguePessoa = p.tipoSanguineo!;
+        if (sanguePessoa == tip.tipoSangue || sanguePessoa == "AB+") {
+          qtdPessoas += 1;
+        }else{
+          if(getDoaApos(sanguePessoa)) {
+            qtdPessoas += 1;
+          } else if(getDoaAandBandOneg(sanguePessoa)) {
+            qtdPessoas += 1;
+          } else if(getDoaBpos(sanguePessoa)) {
+            qtdPessoas += 1;
+          } else if(getDoaABneg(sanguePessoa)) {
+            qtdPessoas += 1;
+          }
+        }
+      }
+      if (pessoas.indexOf(p) + 1 == pessoas.length) {
+        tipoSanguineo?.qtdDoadores = qtdPessoas;
+        tipoSanguineo?.tipoSangue = tip.tipoSangue;
+        listaDoadores.add(tipoSanguineo!);
+      }
+    });
+  });
+  return listaDoadores;
+}
+
+bool getDoaApos(String sanguePessoa) {
+  return sanguePessoa == "A-" || sanguePessoa == "O+" || sanguePessoa == "O-";
+}
+
+bool getDoaAandBandOneg(String sanguePessoa) {
+  return sanguePessoa == "O-";
+}
+
+bool getDoaBpos(String sanguePessoa) {
+  return sanguePessoa == "B-" || sanguePessoa == "O+" || sanguePessoa == "O-";
+}
+
+bool getDoaABneg(String sanguePessoa) {
+  return sanguePessoa == "A-" || sanguePessoa == "B-" || sanguePessoa == "O-";
+}
