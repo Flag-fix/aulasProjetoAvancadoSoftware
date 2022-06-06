@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'dart:js_util';
 import 'dart:math';
 
+import 'package:robo_trader/aulas/atividade10funcoes/comunicado.dart';
+import 'package:robo_trader/aulas/atividade10funcoes/exame.dart';
 import 'package:robo_trader/aulas/atividade10funcoes/imc.dart';
 import 'package:robo_trader/aulas/atividade10funcoes/obesidade.dart';
 import 'package:robo_trader/aulas/atividade10funcoes/pessoa.dart';
+import 'package:robo_trader/aulas/atividade10funcoes/tipoPagamento.dart';
 import 'package:robo_trader/aulas/atividade10funcoes/tipoSanguineo.dart';
 
 /// As funções elaboradas deverá possuir:
@@ -14,7 +16,6 @@ import 'package:robo_trader/aulas/atividade10funcoes/tipoSanguineo.dart';
 /// (iv)  Testes unitários
 
 /*
-* Função - 01
 *  Realizar uma verificação se o pin do cliente é válido para pagamento
 *   1 - Gera um pin randomico seguro
 *   2 - criptografa o pin seguro em Base 64
@@ -54,14 +55,13 @@ bool verificarPinCliente(var pinCliente) {
 }
 
 /*
-* Função - 02
 *  Realiza uma verificação do IMC médio das pessoas de 1 a 100 anos
 *   1 - Calcula a idade
 *   2 - calcula IMC
 *   3 - pega uma lista de pessoas e com base na sua idade calcula quantas pessoas com a idade X
 * tem o imc médio, retorna uma lista de pessoas mostrando a quantidade de pessoas por faixa e seu imc médio
 * */
-int calcularIdade(DateTime dataAniversario) {
+int calcularIdade({required DateTime dataAniversario}) {
   DateTime hoje = DateTime.now();
   int idade = hoje.year - dataAniversario.year;
   if (hoje.month < dataAniversario.month) {
@@ -74,20 +74,20 @@ int calcularIdade(DateTime dataAniversario) {
   return idade;
 }
 
-double calcularImc(Pessoa pessoa){
+double calcularImc(Pessoa pessoa) {
   return pessoa.peso! / pow(pessoa.altura!, 2);
 }
 
-List<Imc> verificaFaixaEtariaImc(List<Pessoa> pessoas){
+List<Imc> verificaFaixaEtariaImc({required List<Pessoa> pessoas}) {
   List<Imc> listaImcMedio = [];
   var varAuxiliarUnidade = 1;
   var varAuxDezena = 10;
   var varAuxiliarWhile = true;
-  var imcMedio ;
+  var imcMedio;
   var qtdPorFaixa;
-  while(varAuxiliarWhile){
+  while (varAuxiliarWhile) {
     pessoas.forEach((e) {
-      var idade = calcularIdade(e.dtNasc!);
+      var idade = calcularIdade(dataAniversario: e.dtNasc!);
       Imc? imc;
       if (idade > varAuxiliarUnidade && idade < varAuxDezena) {
         var IMC = calcularImc(e);
@@ -95,7 +95,8 @@ List<Imc> verificaFaixaEtariaImc(List<Pessoa> pessoas){
         qtdPorFaixa += 1;
       }
       if (pessoas.indexOf(e) + 1 == pessoas.length) {
-        imc?.faixaEtaria = varAuxiliarUnidade.toString() + "-" + varAuxDezena.toString();
+        imc?.faixaEtaria =
+            varAuxiliarUnidade.toString() + "-" + varAuxDezena.toString();
         var resultado = imcMedio / qtdPorFaixa;
         imc?.imcMedio = resultado;
         imcMedio = 0.0;
@@ -113,12 +114,11 @@ List<Imc> verificaFaixaEtariaImc(List<Pessoa> pessoas){
 }
 
 /*
-* Função - 03
 *  Realiza calcula quantidade de obesos por sexo
 * 1 - Calcula quantidade de obesos por sexo
 * */
 
-List<Obesidade> calculaQtdObesoSexo(List<Pessoa> pessoas){
+List<Obesidade> calculaQtdObesoSexo(List<Pessoa> pessoas) {
   List<Obesidade> listaObesos = [];
   var qtdObesoH = 0;
   var homem = 0;
@@ -141,20 +141,19 @@ List<Obesidade> calculaQtdObesoSexo(List<Pessoa> pessoas){
     }
   });
   //add a % de mulheres e homens
-  obesidade?.QtdObesoM = mulher*qtdObesoM/100;
-  obesidade?.QtdObesoH = homem*qtdObesoH/100;
+  obesidade?.QtdObesoM = mulher * qtdObesoM / 100;
+  obesidade?.QtdObesoH = homem * qtdObesoH / 100;
   listaObesos.add(obesidade!);
   return listaObesos;
 }
 
-
 /*
-* Função - 04
 *  Realiza calculo da média das pessoas por tipo sanguíneo
 * 1 - Calcula quantidade de pessoas por tipo sanguineo
 * */
 
-List<TipoSanguineo> calculaQtdMediaTipoSanguineo(List<Pessoa> pessoas, List<TipoSanguineo> tipoSanguineo){
+List<TipoSanguineo> calculaQtdMediaTipoSanguineo(
+    List<Pessoa> pessoas, List<TipoSanguineo> tipoSanguineo) {
   List<TipoSanguineo> listaTipoSanguineo = [];
   tipoSanguineo.forEach((tipo) {
     var idade = 0;
@@ -162,12 +161,12 @@ List<TipoSanguineo> calculaQtdMediaTipoSanguineo(List<Pessoa> pessoas, List<Tipo
     TipoSanguineo? tipoSanguineo;
     pessoas.forEach((p) {
       if (p.tipoSanguineo == tipo.tipoSangue!) {
-        idade += calcularIdade(p.dtNasc!);
+        idade += calcularIdade(dataAniversario: p.dtNasc!);
         qtdPessoas += 1;
       }
       if (pessoas.indexOf(p) + 1 == pessoas.length) {
-        var media= idade / qtdPessoas;
-        tipoSanguineo?.idadeMedia =media;
+        var media = idade / qtdPessoas;
+        tipoSanguineo?.idadeMedia = media;
         tipoSanguineo?.tipoSangue = tipo.tipoSangue!;
         listaTipoSanguineo.add(tipoSanguineo!);
       }
@@ -176,35 +175,34 @@ List<TipoSanguineo> calculaQtdMediaTipoSanguineo(List<Pessoa> pessoas, List<Tipo
   return listaTipoSanguineo;
 }
 
-
 /*
-* Função - 05
 *  Realiza verificação da quantidade de doadores por tipo sanquineo
 * 1 - Calcula quantidade de possiveis doadores por tipo sanguineo
 * 2 - Faz validação para cada tipo sanguineo para verificar se é compativel com sangue ou não
 * OBS: Somente pessoas com idade de 16 a 69 anos e com peso acima de 50 Kg podem doar sangue.
 * */
 
-List<TipoSanguineo> verificaQtdDoadoresPorTipoSanguineo(List<Pessoa> pessoas, List<TipoSanguineo> tiposSanguineo){
+List<TipoSanguineo> verificaQtdDoadoresPorTipoSanguineo(
+    List<Pessoa> pessoas, List<TipoSanguineo> tiposSanguineo) {
   List<TipoSanguineo> listaDoadores = [];
   tiposSanguineo.forEach((tip) {
     var idade = 0;
     var qtdPessoas = 0;
     TipoSanguineo? tipoSanguineo;
     pessoas.forEach((p) {
-      idade = calcularIdade(p.dtNasc!);
+      idade = calcularIdade(dataAniversario: p.dtNasc!);
       if (idade >= 16 && idade <= 69 && p.peso! > 50) {
         var sanguePessoa = p.tipoSanguineo!;
         if (sanguePessoa == tip.tipoSangue || sanguePessoa == "AB+") {
           qtdPessoas += 1;
-        }else{
-          if(getDoaApos(sanguePessoa)) {
+        } else {
+          if (getDoaApos(sanguePessoa: p.tipoSanguineo!)) {
             qtdPessoas += 1;
-          } else if(getDoaAandBandOneg(sanguePessoa)) {
+          } else if (getDoaAandBandOneg(sanguePessoa: p.tipoSanguineo!)) {
             qtdPessoas += 1;
-          } else if(getDoaBpos(sanguePessoa)) {
+          } else if (getDoaBpos(sanguePessoa: p.tipoSanguineo!)) {
             qtdPessoas += 1;
-          } else if(getDoaABneg(sanguePessoa)) {
+          } else if (getDoaABneg(sanguePessoa: p.tipoSanguineo!)) {
             qtdPessoas += 1;
           }
         }
@@ -219,18 +217,135 @@ List<TipoSanguineo> verificaQtdDoadoresPorTipoSanguineo(List<Pessoa> pessoas, Li
   return listaDoadores;
 }
 
-bool getDoaApos(String sanguePessoa) {
-  return sanguePessoa == "A-" || sanguePessoa == "O+" || sanguePessoa == "O-";
+bool getDoaApos({required String sanguePessoa}) =>
+    sanguePessoa == "A-" || sanguePessoa == "O+" || sanguePessoa == "O-";
+
+bool getDoaAandBandOneg({required String sanguePessoa}) => sanguePessoa == "O-";
+
+bool getDoaBpos({required String sanguePessoa}) =>
+    sanguePessoa == "B-" || sanguePessoa == "O+" || sanguePessoa == "O-";
+
+bool getDoaABneg({required String sanguePessoa}) =>
+    sanguePessoa == "A-" || sanguePessoa == "B-" || sanguePessoa == "O-";
+
+/*
+*  Realiza Agendamento da Coleta de Exame do Paciente
+* 1 - Faz verificação de checklist de situação antes da coleta
+* 2 - Faz verificações, caso estiver algo incorreto aplica multa com base no exame realizado
+* */
+Exame coletaSangue({required Pessoa pessoa, required Exame exame}) {
+  if (exame.dataColeta?.day == DateTime.now().day) {
+    pessoa.jejum == true
+        ? exame.valorExame = exame.valorExame
+        : exame.valorExame = verificaSituacaoExame(
+            calcularMulta: (double) {
+              0.1;
+            },
+            valorExame: exame.valorExame!);
+  }
+  return exame;
 }
 
-bool getDoaAandBandOneg(String sanguePessoa) {
-  return sanguePessoa == "O-";
+double verificaSituacaoExame({
+  required double valorExame,
+  required Function(double) calcularMulta,
+}) =>
+    valorExame += calcularMulta(valorExame).toStringAsFixed(2);
+
+// Pagamento de coleta de sangue
+// Pagar no Ato e ou pagar no resultado do exame
+// Se pagar no dia tem desconto 2%
+// Se Atrasar para coleta de sangue paga multa
+// Se Atrasar a retirada do exame paga Multa
+// Cupom de Desconto
+
+/*
+*  Realiza Pagamento da Coleta de Exame do Paciente
+* 1 - Faz verificação de checklist de situação antes da coleta
+* 2 - Faz verificações, se for pagar em dia e se for pagamento em dinheiro ou pix é aplicado desconto
+* 3 - Faz verificações, caso estiver algo incorreto aplica multa com base no exame realizado
+* */
+double realizarPagamentoExame(Exame exame,
+    {required TipoPagamento tipoPagamento, required DateTime dataPagamento}) {
+  var valorTotal;
+  if (dataPagamento.day == exame.dataColeta?.day) {
+    valorTotal = desconto(tipoPagamento, valorExame: exame.valorExame!);
+  } else {
+    valorTotal = jurosPorAtraso(
+        dias: calculaDiferencaDeDiasEntreDatas(dataPagamento),
+        valorServico: exame.valorExame!,
+        jurosPorDia: (double) {
+          0.03;
+        });
+  }
+  return valorTotal;
 }
 
-bool getDoaBpos(String sanguePessoa) {
-  return sanguePessoa == "B-" || sanguePessoa == "O+" || sanguePessoa == "O-";
+double jurosPorAtraso({
+  required int dias,
+  required double valorServico,
+  required Function(double) jurosPorDia,
+}) {
+  for (var i = 1; i <= dias; i++) {
+    double valor = jurosPorDia(valorServico);
+    valorServico += valor;
+  }
+  return double.parse(valorServico.toStringAsFixed(2));
 }
 
-bool getDoaABneg(String sanguePessoa) {
-  return sanguePessoa == "A-" || sanguePessoa == "B-" || sanguePessoa == "O-";
+double desconto(TipoPagamento pagamento, {required double valorExame}) {
+  if (pagamento.tipo == "dinheiro") valorExame - (valorExame * 0.02);
+  if (pagamento.tipo == "pix") valorExame - (valorExame * 0.05);
+  return valorExame;
+}
+
+int calculaDiferencaDeDiasEntreDatas(DateTime data)=> (DateTime.now().difference(data).inHours / 24).round();
+
+
+// Coleta de amostra de sangue caso COVID:
+// Reagente :
+// Enviar comunicado para ministério da saúde informando mais 1 positivado
+// Encaminhar para repouso em casa atestado 14 dias
+// Não Reagente:
+// Enviar para casa - repouso de 3 dias
+
+bool verificaCovid(Pessoa pessoa, {required Exame exame}){
+  var resultado = false;
+  if(exame.nomeExame == "covid")  {
+    exame.resultadoCovid == true ? resultado = true :  resultado = false;
+  }
+  emitirNotificadoSaude(pessoa: pessoa, resultado: resultado);
+  return resultado;
+}
+
+void emitirNotificadoSaude({required Pessoa pessoa, required bool resultado}){
+  Comunicado? comunicado;
+  var atestado = 0;
+  if(resultado){
+    atestado = pessoa.atestado = 14;
+    comunicado?.mensagem= "A pessoa $pessoa.nome apresentou reagente POSITIVO, necessita de $atestado dias de isolamento social";
+  }else{
+    atestado = pessoa.atestado = 3;
+    comunicado?.mensagem= "A pessoa $pessoa.nome apresentou reagente NEGATIVO, necessita de $atestado dias de afastamento";
+  }
+}
+
+
+
+/*
+* Função para finalizar o atendimento do exame
+*  Receber o exame que afim de verificar se o mesmo já foi realizado pagamento
+* */
+bool finalizarExame(
+    Exame exame,
+    bool servicoPago,
+    ) {
+  if (!exame.examePago!) {
+    throw Exception("Exame do Paciente não foi Pago, Não Liberar Exame!");
+  } else {
+    if (servicoPago) {
+      return true;
+    }
+    return false;
+  }
 }
