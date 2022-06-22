@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/d_tratamento_de_erros/build" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/d_tratamento_de_erros/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/d_tratamento_de_erros/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/b_funcoes_anonimas/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/b_funcoes_anonimas/build" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/b_funcoes_anonimas/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/c_depuracao/build" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/c_depuracao/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/c_depuracao/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/a_funcoes/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/a_funcoes/build" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module4/a_funcoes/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/build" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module 2/variaveis/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module 2/variaveis/build" />
+      <excludeFolder url="file://$MODULE_DIR$/projeto_aula/lib/aulas/aula5/module 2/variaveis/.pub" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
+  </component>
+</module>
